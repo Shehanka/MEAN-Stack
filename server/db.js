@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('', (err) => {
+mongoose.connect('mongodb://localhost:27017/CRUDDB', (err) => {
     if(!err){
         console.log("MongoDB Connection succeeded");
     }else {
