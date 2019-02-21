@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
     if(!ObjectId.isValid(req.params.id)){
-        return res.status(400).send('No record with given id : $(req.params.id)');
+        return res.status(400).send(`No record with given id : $(req.params.id)`);
     }
 
     Employee.findNyId(req.params.id, (err, doc) => {
@@ -44,6 +44,41 @@ router.post('/', (req, res) => {
             console.log('Error in Employee Save : ' + JSON.stringify(err, undefined, 2));
         }
     });
+});
+
+router.put('/:id', (req, res) => {
+  if (!ObjectId.$isValid(req.param.id)){
+    return res.status(400).send(`No record with given id : ${req.param.id}`)
+  }
+
+  var emp = {
+    name: req.body.name,
+    position: req.body.position,
+    office: req.body.office,
+    salary: req.body.salary
+  };
+
+  Employee.findByIdAndUpdate(req.param.id, { $set: emp}, { new: true}, (err, doc) => {
+    if (!err){
+      res.send(doc)
+    } else {
+      console.log('Error in Employee Update : ' + JSON.stringify(err, undefined, 2));
+    }
+  });
+});
+
+router.delete('/:id', (req, res) => {
+  if (!ObjectId.$isValid(req.param.id)){
+    return res.status(400).send(`No record with given id : ${req.param.id}`)
+  }
+
+  Employee.findByIdAndRemove(req.param.id, (err, doc) => {
+    if(!err){
+      res.send(doc);
+    }else {
+      console.log('Error in Employee Delete : ' + JSON.stringify(err, undefined, 2));
+    }
+  });
 });
 
 module.exports = router;
